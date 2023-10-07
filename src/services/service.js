@@ -32,3 +32,36 @@ export async function UploadFile(file) {
         throw error;
     }
 }
+
+
+export async function DeleteElement(nombre) {
+    try {
+        const response = await fetch(`${URL}/eliminar_elemento/${nombre}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            console.log(`Elemento '${nombre}' eliminado con éxito.`);
+        } else {
+            console.error(`Error al eliminar el elemento '${nombre}'.`);
+        }
+    } catch (error) {
+        console.error(`Error al eliminar el elemento '${nombre}':`, error);
+        throw error;
+    }
+}
+
+
+export function DownloadElement(nombre) {
+    try {
+        // Construye la URL de descarga con el nombre del elemento
+        const downloadUrl = `${URL}/descargar_elemento/${nombre}`;
+        // Abre una nueva ventana o pestaña del navegador para descargar el archivo
+        window.open(downloadUrl, '_blank');
+    } catch (error) {
+        console.error(`Error al descargar el elemento '${nombre}':`, error);
+        throw error;
+    }
+}
+
+

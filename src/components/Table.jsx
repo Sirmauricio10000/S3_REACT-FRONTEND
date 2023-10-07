@@ -1,5 +1,5 @@
 import './table.css';
-import { GetNames, UploadFile } from '../services/service';
+import { GetNames, UploadFile, DeleteElement, DownloadElement } from '../services/service';
 import React, { useEffect, useState } from 'react';
 
 const ElementosDelBucket = () => {
@@ -24,6 +24,14 @@ const ElementosDelBucket = () => {
         document.getElementById("fileInput").click();
     };
 
+    const handleDownloadClick = (nombre) => {
+        try {
+            DownloadElement(nombre); // Llama a la función DownloadElement
+        } catch (error) {
+            console.error(`Error al descargar el elemento '${nombre}':`, error);
+        }
+    };
+
     const handleFileInputChange = async (event) => {
         const selectedFile = event.target.files[0];
         if (selectedFile) {
@@ -33,6 +41,17 @@ const ElementosDelBucket = () => {
             } catch (error) {
                 console.error('Error al cargar el archivo:', error);
             }
+        }
+    };
+
+
+    const handleDeleteClick = async (nombre) => {
+        try {
+            await DeleteElement(nombre); // Llama a la función DeleteElement
+            // Actualiza la tabla volviendo a cargar los datos
+            fetchData();
+        } catch (error) {
+            console.error(`Error al eliminar el elemento '${nombre}':`, error);
         }
     };
 
@@ -54,10 +73,10 @@ const ElementosDelBucket = () => {
                             <td>{index + 1}</td>
                             <td>{item}</td>
                             <td>
-                                <span className="icon descargar">▼</span>
+                                <span style={{ color: 'green', fontSize: '28px'}} className="icon descargar" onClick={() => handleDownloadClick(item)}>▼</span>
                             </td>
                             <td>
-                                <span className="icon eliminar">✖</span>
+                            <span style={{ color: 'red', fontSize: '28px'}} className="icon eliminar" onClick={() => handleDeleteClick(item)}>✖</span>
                             </td>
                         </tr>
                     ))}
